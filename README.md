@@ -182,19 +182,19 @@ python run_experiments.py --compare client-selection --strategy fedprox --datase
 After running experiments, generate comparison plots:
 
 ```bash
-# 1. 默认：处理当前目录下的 metrics.json
+# 1. Default: process metrics.json in current directory
 python plot_results.py
 
-# 2. 指定单个文件
+# 2. Specify a single file
 python plot_results.py metrics_fedprox_cifar10.json
 
-# 3. 对比多个实验（你的核心用法）
+# 3. Compare multiple experiments
 python plot_results.py metrics_fedavg_cifar10.json metrics_fedprox_cifar10.json metrics_fedadagrad_cifar10.json
 
-# 4. 当前目录下所有 metrics*.json 一起对比
+# 4. Compare all metrics*.json files in current directory
 python plot_results.py --all
 
-# 5. 指定输出目录
+# 5. Specify output directory
 python plot_results.py metrics_fedavg.json metrics_fedprox.json --output plots
 ```
 
@@ -237,13 +237,13 @@ If your system has a CUDA GPU, the code will automatically use it. To configure 
 backend.client-resources.num-gpus = 0.5  # GPU fraction per client
 ```
 
-### 实验报错（ray相关）后，可能先清理再重跑：
+### If you encounter Ray-related errors, clean up and retry:
 
 ```toml
-# 清理残留
+# Kill leftover Ray processes
 taskkill /F /IM raylet.exe 2>$null
 
-# 再跑新实验
+# Re-run the experiment
 flwr run . --stream --run-config "..."
 ```
 
