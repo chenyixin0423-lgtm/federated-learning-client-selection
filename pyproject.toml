@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quickstart-pytorch"
+version = "1.0.1"
+description = "Federated Learning with PyTorch and Flower (Quickstart Example)"
+license = "Apache-2.0"
+dependencies = [
+    "flwr[simulation]>=1.26.0",
+    "flwr-datasets[vision]>=0.5.0",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "numpy",
+    "matplotlib",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "flwrlabs"
+
+[tool.flwr.app.components]
+serverapp = "pytorchexample.server_app:app"
+clientapp = "pytorchexample.client_app:app"
+
+[tool.flwr.app.config]
+num-server-rounds = 30
+fraction-evaluate = 0.5
+franction-train = 0.1
+local-epochs = 2
+learning-rate = 0.01
+batch-size = 32
+
+# Strategy: "fedavg" | "fedprox" | "fedadagrad"
+strategy = "fedavg"
+
+# FedProx proximal term coefficient (only used when strategy = "fedprox")
+proximal-mu = 0.1
+
+# Model: "cnn" (simple CNN) | "resnet18"
+model = "cnn"
+
+# Dataset: "cifar10" | "mnist" | "fashion-mnist"
+dataset = "cifar10"
+
+# Data partitioner: "iid" | "dirichlet"
+partitioner = "iid"
+# Dirichlet alpha (only used when partitioner = "dirichlet", lower = more non-IID)
+dirichlet-alpha = 0.5
+
+# Client selection: "random" | "high-loss" | "cluster-based" | "power-of-choice"
+client-selection = "random"
+
+# Differential Privacy: gradient clipping max norm (0 = disabled)
+dp-clip = 0.0
+# Differential Privacy: Gaussian noise std added to gradients (0 = disabled)
+dp-noise = 0.0
